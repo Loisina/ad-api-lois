@@ -7,6 +7,7 @@ export const registerUserValidator = Joi.object({
   email: Joi.string().required(),
   password : Joi.string().required().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
   confirmPassword: Joi.ref("password"),
+  
 
 }).with("password", "confirmPassword");
 
