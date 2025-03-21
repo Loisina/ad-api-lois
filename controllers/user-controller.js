@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { loginUserValidator, registerUserValidator } from "../validators/user-validator.js";
 import { UserModel } from "../models/user-model.js";
+import { sendEmailSignup } from "../utils/mailing.js";
 
 
 export const registerUser = async (req, res, next) => {
@@ -25,9 +26,12 @@ export const registerUser = async (req, res, next) => {
         lastName : value.lastName,
         userName : value.userName,
         email: value.email,
+        role: value.role,
         password : hashedPassword
-  });
+  }); 
   // send registration email
+  const sendWelcomeEmail = sendEmailSignup(newUser.email, "Welcome to the Classifiedad Page 🎉", newUser.userName, newUser.role);
+  
   // generate token
   const accessTokenSignup = jwt.sign(
     {id: user.id},
